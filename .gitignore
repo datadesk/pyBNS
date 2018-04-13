@@ -99,3 +99,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# login information
+login_info.py
