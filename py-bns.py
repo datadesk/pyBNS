@@ -32,15 +32,25 @@ class pyBNS(object):
     def post(self, url, payload):
         url = self.api_url.format(url)
         # try posting the complete url, credentials and headers
-        try:
-            response = requests.post(url=url, data=payload, headers=self.headers)
-            # raise an exception if it's not 200
-            response.raise_for_status()
-            return response
-        except requests.exceptions.HTTPError as e:
-            status = response.status_code
-            e.msg = 'Received a {0} response, instead of 200'.format(status)
-            print(e.msg)
+        r = requests.post(url=url, data=payload, headers=self.headers)
+        # raise an exception if it's not 200
+        r.raise_for_status()
+        return r
+
+    def get(self, url):
+        # headers for the get request
+        get_header = {
+            'content-type': 'application/json',
+            'authorization': 'Bearer {0}'.format(self.access_token)
+        }
+        # set up the url
+        url = self.api_url.format(url)
+        # try requesting a story
+        r = requests.get(url=url, headers=get_header)
+        # raise exception if it's not 200
+        r.raise_for_status()
+        # return the response
+        return r
 
     def connect(self):
         # If there's not a username and password, raise an exception
@@ -58,6 +68,11 @@ class pyBNS(object):
         # save access token for later use
         self.access_token = str(response.json()['access_token'])
 
+    def get_story(self, story_id):
+        # request the json from this url with the story id at the end
+        r = self.get('syndication/stage/portal/adapter/v1/api/v1/articles/{0}'.format(story_id))
+        return r.json()
+
     def disconnect(self):
         try:
             payload = 'token={0}'.format(self.access_token)
@@ -68,9 +83,17 @@ class pyBNS(object):
 
 
 # Create an instance, passing arguments as keyword arguments
-bb = pyBNS()
+bb = pyBNS(
+    username=login_info.username,
+    password=login_info.password
+)
+
 
 # post credentials and header to /syndication/token
 bb.connect()
+
+# get the story; use the story_id as an argument
+bb.get_story('P6ZNX36JIJUP')
+
 # request api token be revoked
 bb.disconnect()
