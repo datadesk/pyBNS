@@ -34,15 +34,10 @@ class pyBNS(object):
     def post(self, url, payload):
         url = self.api_url.format(url)
         # try posting the complete url, credentials and headers
-        try:
-            response = requests.post(url=url, data=payload, headers=self.headers)
-            # raise an exception if it's not 200
-            response.raise_for_status()
-            return response
-        except requests.exceptions.HTTPError as e:
-            status = response.status_code
-            e.msg = 'Received a {0} response, instead of 200'.format(status)
-            print(e.msg)
+        r = requests.post(url=url, data=payload, headers=self.headers)
+        # raise an exception if it's not 200
+        r.raise_for_status()
+        return r
 
     def get(self, url):
         # headers for the get request
