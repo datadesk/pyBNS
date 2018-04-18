@@ -7,8 +7,6 @@ try:
     from urllib.parse import quote
 except ImportError:
     from urllib import quote
-# to import login information
-import login_info
 
 
 class LoginError(Exception):
