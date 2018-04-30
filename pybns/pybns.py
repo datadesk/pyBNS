@@ -80,6 +80,3 @@ class pyBNS(object):
             self.post('syndication/revoke', payload)
         except AttributeError as e:
             print(e)
-
-
-
