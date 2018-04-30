@@ -82,18 +82,4 @@ class pyBNS(object):
             print(e)
 
 
-# Create an instance, passing arguments as keyword arguments
-bb = pyBNS(
-    username=login_info.username,
-    password=login_info.password
-)
 
-
-# post credentials and header to /syndication/token
-bb.connect()
-
-# get the story; use the story_id as an argument
-bb.get_story('P6ZNX36JIJUP')
-
-# request api token be revoked
-bb.disconnect()
