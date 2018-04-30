@@ -59,7 +59,7 @@ class pyBNS(object):
             username = quote(self.username)
             password = quote(self.password)
         except AttributeError:
-            msg = 'pybBNS instance requires a username and password'
+            msg = 'pyBNS instance requires a username and password'
             raise LoginError(msg)
 
         login_data = 'username={0}&password={1}&remember=false&grant_type=password'.format(username, password)
